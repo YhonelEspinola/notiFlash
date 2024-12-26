@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/linea"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        app:itemBackground="@android:color/transparent"
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/menu_buttom"
+        android:background="@color/white"
+        android:duplicateParentState="true"
+        app:itemIconTint="@color/icon_color_menu"
+        app:itemTextColor="@color/icon_color_menu"
+        style="@style/CustomBottomNavigationView"
+        />
+
+    <FrameLayout
+        android:id="@+id/fragment_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="66.5dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

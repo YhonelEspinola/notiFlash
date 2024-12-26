@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "220303234842",
+    "project_id": "noticiasapp-581d6",
+    "storage_bucket": "noticiasapp-581d6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220303234842:android:b8950556750228d6253ea3",
+        "android_client_info": {
+          "package_name": "com.noticias.notiflash"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHEqtTkm_YHSseYHFYNqJK-IZGSyDYHMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

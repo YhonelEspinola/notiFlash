@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="linea">#54DCDCDC</color>
+    <color name="heart">#FF5722</color>
+    <color name="checked_false_icon">#8E8E8E</color>
+    <color name="marca">#8E8E8E</color>
+</resources>
