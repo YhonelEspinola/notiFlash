@@ -7,6 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.noticias.notiflash.InicioFragment
 import com.noticias.notiflash.R
 import com.noticias.notiflash.activity.fragment.PerfilFragment
+import com.noticias.notiflash.activity.fragment.PostNoticiaFragment
 
 class MenuActivity : AppCompatActivity(){
 
@@ -28,10 +29,15 @@ class MenuActivity : AppCompatActivity(){
                     openFragment(InicioFragment.newInstance())
                     true
                 }
+                R.id.itemPost -> {
+                    openFragment(PostNoticiaFragment.newInstance())
+                    true
+                }
                 R.id.itemProfile -> {
                     openFragment(PerfilFragment.newInstance())
                     true
                 }
+
                 else -> false
             }
         }

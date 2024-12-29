@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.noticias.notiflash.model.Noticia
+import com.google.firebase.Timestamp
 
 class NoticiasViewModel:ViewModel() {
 
@@ -17,13 +18,13 @@ class NoticiasViewModel:ViewModel() {
     fun crearNoticia(
         titulo: String,
         descripcion: String,
-        fecha: String,
+        fecha : Timestamp = Timestamp.now(),
         ubicacion: String,
         imagenURL: String,
         callback: (Boolean) -> Unit
     ) {
         val nuevaNoticiaRef = db.collection("noticias").document()
-        val noticiaID = nuevaNoticiaRef.id
+
         val data = hashMapOf(
             "titulo" to titulo,
             "descripcion" to descripcion,
