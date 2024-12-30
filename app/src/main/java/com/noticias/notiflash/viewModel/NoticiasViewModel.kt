@@ -40,11 +40,36 @@ class NoticiasViewModel:ViewModel() {
     }
 
     fun listarNoticias(){
+
+        val listaNoticias = arrayListOf<Noticia>()
+
         db.collection("noticias")
-            .orderBy("fecha", Query.Direction.DESCENDING) // Ordenar por fecha
+            .orderBy("fecha", Query.Direction.DESCENDING)
             .get()
-            .addOnSuccessListener { result ->
-                val listaNoticias = result.documents.mapNotNull { it.toObject(Noticia::class.java) }
+            .addOnSuccessListener { querySnapshot ->
+                for(document in querySnapshot){
+                    val data = document.data
+                    val noticiaID = document.id
+                    val titulo = data["titulo"] as? String ?: ""
+                    val descripcion = data["descripcion"] as? String ?: ""
+                    val fecha = data["fecha"] as? Timestamp ?: Timestamp.now()
+                    val ubicacion = data["ubicacion"] as? String ?: ""
+                    val imagenURL = data["imagenURL"] as? String ?: ""
+                    val userID = data["userID"] as? String ?: ""
+
+                    if(document != null){
+                        val noticia = Noticia(
+                            titulo,
+                            descripcion,
+                            fecha,
+                            ubicacion,
+                            imagenURL,
+                            userID,
+                            noticiaID
+                        )
+                        listaNoticias.add(noticia)
+                    }
+                }
                 listarNoticia.value = listaNoticias
             }
             .addOnFailureListener { exception ->

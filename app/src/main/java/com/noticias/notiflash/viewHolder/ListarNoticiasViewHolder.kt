@@ -56,6 +56,7 @@ RecyclerView.ViewHolder(inflater.inflate(R.layout.item_noticias, viewGroup, fals
                     putString("ubicacion", noticia.ubicacion)
                     putString("imagenURL", noticia.imagenURL)
                     putString("userID", noticia.userID)
+                    putString("noticiaID", noticia.noticiaID)
                 }
             }
 

@@ -8,5 +8,6 @@ data class Noticia(
     val fecha: Timestamp = Timestamp.now(),
     val ubicacion: String = "",
     val imagenURL: String = "",
-    val userID: String = "") {
+    val userID: String = "",
+    val noticiaID:String = "") {
 }
