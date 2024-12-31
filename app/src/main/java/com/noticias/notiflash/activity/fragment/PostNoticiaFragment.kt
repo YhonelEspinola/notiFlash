@@ -1,9 +1,11 @@
 package com.noticias.notiflash.activity.fragment
 
-import android.app.DatePickerDialog
-import android.icu.util.Calendar
+
+
+
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,38 +14,50 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.Timestamp
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.noticias.notiflash.InicioFragment
 import com.noticias.notiflash.R
 import com.noticias.notiflash.viewModel.NoticiasViewModel
+import java.io.File
 import java.text.SimpleDateFormat
-import java.util.Locale
-import com.google.firebase.Timestamp
-import com.noticias.notiflash.InicioFragment
+import java.util.*
 
 class PostNoticiaFragment: Fragment() {
 
     private lateinit var viewModel: NoticiasViewModel
-
-    val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri ->
-        if(uri != null){
-            imgNoticia?.setImageURI(uri)
-            selectedImageUri = uri
-        }else{
-            Log.i("ari","img no seleccionada")
-        }
-    }
-
     private lateinit var btnImagen: AppCompatButton
+    private lateinit var btnTomarFoto: AppCompatButton
     private lateinit var imgNoticia: ImageView
     private var selectedImageUri: Uri? = null
+    private var photoUri: Uri? = null
     private val storage = Firebase.storage
 
+    private val pickMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                imgNoticia.setImageURI(uri)
+                selectedImageUri = uri
+            } else {
+                Log.i("PostNoticia", "No se seleccionó ninguna imagen")
+            }
+        }
+
+    private val takePicture =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success && photoUri != null) {
+                imgNoticia.setImageURI(photoUri)
+                selectedImageUri = photoUri
+            } else {
+                showError("No se tomó ninguna foto")
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,6 +73,7 @@ class PostNoticiaFragment: Fragment() {
         viewModel = ViewModelProvider(this)[NoticiasViewModel::class.java]
 
         btnImagen = view.findViewById(R.id.btnSeleccionarImagen)
+        btnTomarFoto = view.findViewById(R.id.btnTomarFoto)
         imgNoticia = view.findViewById(R.id.imgNoticia)
 
         val buttonPost = view.findViewById<AppCompatButton>(R.id.btnPublicarNoticia)
@@ -66,9 +81,18 @@ class PostNoticiaFragment: Fragment() {
         val descripcionNoticia = view.findViewById<TextInputEditText>(R.id.edtDescripcion)
         val ubicacionReferencial = view.findViewById<TextInputEditText>(R.id.edtUbicacion)
 
-
         btnImagen.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
+        btnTomarFoto.setOnClickListener {
+            val photoFile = createImageFile()
+            photoUri = FileProvider.getUriForFile(
+                requireContext(),
+                "${requireContext().packageName}.provider",
+                photoFile
+            )
+            takePicture.launch(photoUri)
         }
 
         buttonPost.setOnClickListener {
@@ -83,22 +107,25 @@ class PostNoticiaFragment: Fragment() {
                 showError("Complete todos los campos correctamente")
             }
         }
+    }
 
-
+    private fun createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir: File = requireContext().cacheDir
+        return File.createTempFile("IMG_${timeStamp}_", ".jpg", storageDir)
     }
 
     private fun uploadImageAndCreateNews(
         uri: Uri,
         titulo: String,
         descripcion: String,
-        fecha : Timestamp = Timestamp.now(),
+        fecha: Timestamp = Timestamp.now(),
         ubicacion: String
     ) {
         val storageRef = storage.reference.child("noticias/${System.currentTimeMillis()}.jpg")
         storageRef.putFile(uri)
             .addOnSuccessListener {
                 storageRef.downloadUrl.addOnSuccessListener { imageUrl ->
-
                     viewModel.crearNoticia(titulo, descripcion, fecha, ubicacion, imageUrl.toString()) { result ->
                         if (result) {
                             showSuccess("Noticia publicada")
@@ -116,9 +143,6 @@ class PostNoticiaFragment: Fragment() {
             }
     }
 
-
-
-
     private fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
@@ -127,9 +151,7 @@ class PostNoticiaFragment: Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
-    companion object{
+    companion object {
         fun newInstance(): PostNoticiaFragment = PostNoticiaFragment()
     }
-
-
 }

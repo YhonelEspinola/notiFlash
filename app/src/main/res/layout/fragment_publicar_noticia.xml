@@ -16,7 +16,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Header -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -27,7 +26,6 @@
                 android:textColor="@color/black"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Imagen Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -43,7 +41,6 @@
                     android:src="@drawable/place" />
             </androidx.cardview.widget.CardView>
 
-            <!-- Botones para imagen -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,7 +70,6 @@
                     android:textColor="@color/white" />
             </LinearLayout>
 
-            <!-- Campos de texto -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,7 +132,6 @@
                     android:hint="Escribe la ubicación" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Botón de publicar -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnPublicarNoticia"
                 android:layout_width="wrap_content"
