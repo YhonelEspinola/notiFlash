@@ -5,7 +5,6 @@ package com.noticias.notiflash.activity.fragment
 
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +21,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.noticias.notiflash.InicioFragment
 import com.noticias.notiflash.R
 import com.noticias.notiflash.viewModel.NoticiasViewModel
 import java.io.File

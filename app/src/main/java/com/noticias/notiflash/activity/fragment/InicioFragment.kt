@@ -1,15 +1,16 @@
-package com.noticias.notiflash
+package com.noticias.notiflash.activity.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.noticias.notiflash.R
 import com.noticias.notiflash.adapter.NoticiasAdapter
-import com.noticias.notiflash.model.Noticia
 import com.noticias.notiflash.viewModel.NoticiasViewModel
 
 class InicioFragment:Fragment() {
@@ -30,6 +31,9 @@ class InicioFragment:Fragment() {
 
         noticiaViewModel= ViewModelProvider(this)[NoticiasViewModel::class.java]
 
+        val searchView = view.findViewById<SearchView>(R.id.search)
+
+
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerNoticias)
         recycler.layoutManager = LinearLayoutManager(requireContext())
         noticiasAdapter = NoticiasAdapter()
@@ -44,10 +48,22 @@ class InicioFragment:Fragment() {
             noticiasAdapter.setDatos(noticias)
         }
 
-        // Llamar a la función para listar noticias
+
+
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { noticiasAdapter.filtrar(it) }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { noticiasAdapter.filtrar(it) }
+                return true
+            }
+        })
+
         noticiaViewModel.listarNoticias()
-
-
     }
 
 
